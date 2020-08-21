@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN-QoS</title>
+    <link href="./bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+
+    <!-- 添加流表部分 -->
+    <div class="alert alert-primary" role="alert">
+        <h3>添加流表</h3>
+    </div>
+    <form action="POST" id="addFlow">
+
+        <!-- 基本信息部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">基本信息</span>
+        </nav>
+        <div class="form-group">
+            <span>Switch</span>
+            <input type="text" class="form-control" name="swicth_id" id="swicth_id" placeholder="input switch ID">
+        </div>
+        <div class="form-group">
+            <span>Name</span>
+            <input type="text" class="form-control" name="name" id="name" placeholder="input name">
+        </div>
+        <div class="form-group">
+            <span>Priority</span>
+            <input type="text" class="form-control" name="priority" id="priority" placeholder="input priority">
+        </div>
+        <hr>
+        <!-- 匹配字段部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">匹配字段</span>
+        </nav>
+        <div class="form-group">
+            <span>in-port</span>
+            <input type="text" class="form-control" name="in_port" id="in_port" placeholder="input in_port">
+        </div>
+        <div class="form-group">
+            <span>Ethernet</span>
+            <input type="text" class="form-control" name="ethernet" id="ethernet" placeholder="input Ethernet">
+        </div>
+        <div class="form-group">
+            <span>IP-source</span>
+            <input type="text" class="form-control" name="ip_source" id="ip_source" placeholder="input IP-source">
+        </div>
+        <div class="form-group">
+            <span>IP-destination</span>
+            <input type="text" class="form-control" name="ip_dest" id="ip_dest" placeholder="IP-destination">
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <span>layer4-match</span>
+                <select class="form-control" name="layer4_match" id="layer4_match">
+                    <option>TCP</option>
+                    <option>UDP</option>
+                </select>
+            </div>
+            <div class="col">
+                <span>源端口</span>
+                <input type="text" class="form-control" name="source_id" id="source_id">
+            </div>
+            <div class="col">
+                <span>目的端口</span>
+                <input type="text" class="form-control" name="dest_port" id="dest_port">
+            </div>
+        </div>
+
+       <hr>
+        
+        <!-- 动作选择部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">动作</span>
+        </nav>
+        <div class="form-row">
+            <div class="col">
+                <span>action</span>
+                <select class="form-control" name="action" id="action">
+                    <option>output</option>
+                    <option>drop</option>
+                </select>
+            </div>
+            <div class="col">
+                <span>out-port</span>
+                <input type="text" class="form-control" name="out_port" id="out_port">
+            </div>
+        </div>
+        <hr>
+        <button type="button" id="add_flow" class="btn btn-outline-primary btn-block">添加</button>
+    </form>
+
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        <h3>流表管理</h3>
+    </div>
+</div>
+<script src="./jquery-3.3.1.min.js"></script>
+<script src="./bootstrap.min.js"></script>
+<script src="./index.js"></script>
+</body>
+</html>

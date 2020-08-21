@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN-QoS</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+
+    <!-- 添加meter表 -->
+    <div class="alert alert-primary" role="alert">
+        <h3>添加Meter表</h3>
+    </div>
+    <form action="POST" id="addMeter">
+        <div class="form-group">
+            <span>MeterID</span>
+            <input type="text" class="form-control" name="meter_id" id="meter_id" placeholder="input Meter ID">
+        </div>
+        <div class="form-group">
+            <span>MeterType</span>
+            <select class="form-control" name="meter_type" id="meter_type">
+                <option>ofpmbt-drop</option>
+                <option>output</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <span>BandRate</span>
+            <input type="text" class="form-control" name="band_rate" id="band_rate" placeholder="input band rate">
+        </div>
+        <div class="form-group">
+            <span>BandSize</span>
+            <input type="text" class="form-control" name="band_size" id="band_size" placeholder="input band size">
+        </div>
+        <hr>
+        <button type="button" id="add_meter" class="btn btn-outline-primary btn-block">添加</button>
+    </form>
+
+    <hr>
+    <!-- 添加流表部分 -->
+    <div class="alert alert-primary" role="alert">
+        <h3>添加流表</h3>
+    </div>
+    <form action="POST" id="addFlow">
+
+        <!-- 基本信息部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">基本信息</span>
+        </nav>
+        <div class="form-group">
+            <span>Switch</span>
+            <input type="text" class="form-control" name="swicth_id" id="swicth_id" placeholder="input switch ID">
+        </div>
+        <div class="form-group">
+            <span>Name</span>
+            <input type="text" class="form-control" name="name" id="name" placeholder="input name">
+        </div>
+        <div class="form-group">
+            <span>Priority</span>
+            <input type="text" class="form-control" name="priority" id="priority" placeholder="input priority">
+        </div>
+        <hr>
+        <!-- 匹配字段部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">匹配字段</span>
+        </nav>
+        <div class="form-group">
+            <span>in-port</span>
+            <input type="text" class="form-control" name="in_port" id="in_port" placeholder="input in_port">
+        </div>
+        <div class="form-group">
+            <span>Ethernet</span>
+            <input type="text" class="form-control" name="ethernet" id="ethernet" placeholder="input Ethernet">
+        </div>
+        <div class="form-group">
+            <span>IP-source</span>
+            <input type="text" class="form-control" name="ip_source" id="ip_source" placeholder="input IP-source">
+        </div>
+        <div class="form-group">
+            <span>IP-destination</span>
+            <input type="text" class="form-control" name="ip_dest" id="ip_dest" placeholder="IP-destination">
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <span>layer4-match</span>
+                <select class="form-control" name="layer4_match" id="layer4_match">
+                    <option>TCP</option>
+                    <option>UDP</option>
+                </select>
+            </div>
+            <div class="col">
+                <span>源端口</span>
+                <input type="text" class="form-control" name="source_port" id="source_port">
+            </div>
+            <div class="col">
+                <span>目的端口</span>
+                <input type="text" class="form-control" name="dest_port" id="dest_port">
+            </div>
+        </div>
+
+       <hr>
+        
+        <!-- 动作选择部分 -->
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <span class="navbar-text">动作</span>
+        </nav>
+        <div class="form-row">
+            <div class="col">
+                <span>action</span>
+                <select class="form-control" name="action" id="action">
+                    <option>output</option>
+                    <option>drop</option>
+                </select>
+            </div>
+            <div class="col">
+                <span>MeterID</span>
+                <input type="text" class="form-control" name="meter_id" id="meterid">
+            </div>
+            <div class="col">
+                <span>out-port</span>
+                <input type="text" class="form-control" name="out_port" id="out_port">
+            </div>
+        </div>
+        <hr>
+        <button type="button" id="add_flow" class="btn btn-outline-primary btn-block">添加</button>
+    </form>
+
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        <h3>流表管理</h3>
+    </div>
+    <button type="button" id="del_flow" class="btn btn-outline-primary btn-block">删除所选流表</button>
+    <hr>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">SwitchID</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Match</th>
+            <th scope="col">Instructions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in table %}
+          <tr>
+            <th scope="row">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" name="in_port" id="{{forloop.counter}}" value="{{item.inport}}">
+                    <label class="custom-control-label" for="{{forloop.counter}}">{{item.flow}}</label>
+                </div>
+            </th>
+            <td>{{item.flow_node}}</td>
+            <td>{{item.priority}}</td>
+            <td>{{item.match}}</td>
+            <td>{{item.instruction}}</td>
+          </tr>
+	{% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Meter表管理 -->
+      <hr>
+    <div class="alert alert-primary" role="alert">
+        <h3>Meter表管理</h3>
+    </div>
+    <button type="button" id="del_meter" class="btn btn-outline-primary btn-block">删除所选Meter表</button>
+    <hr>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">MeterID</th>
+            <th scope="col">Type</th>
+            <th scope="col">Rate(Kbps)</th>
+            <th scope="col">burst_size(Kbps)</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for meter in meters %}
+          <tr>
+            <th scope="row">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" name="meter_id" id="'meter' + {{meter.meter}}" value="{{meter.meter}}">
+                    <label class="custom-control-label" for="'meter' + {{meter.meter}}">{{meter.meter}}</label>
+                </div>
+            </th>
+            <td>{{meter.meterType}}</td>
+            <td>{{meter.bandRate}}</td>
+            <td>{{meter.banSize}}</td>
+          </tr>
+	{% endfor %}
+        </tbody>
+      </table>
+</div>
+<script src="static/js/jquery-3.3.1.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/index.js"></script>
+</body>
+</html>
